@@ -11,7 +11,7 @@
     int lineno = 1; // initialize to 1
     int isLexerInit = 0;
     struct Token token;
-    int ret_print(char *token_type);
+    int ret_save(char *token_type);
     void yyerror();
 %}
 
