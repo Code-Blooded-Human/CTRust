@@ -1,5 +1,8 @@
 # TRustC
 Transpile Rust to C.
+
+bison -d parser.y && flex lexer.l && gcc parser.tab.c lex.yy.c
+
 ## Goal of project
 This project intends to transpile a code written in Rust to C. For phase 1 we consider only selected aspects of Rust. We may later improve the transpiler to transpile standard Rust. We hereby define TRust as subset of Rust which may not contain all features. 
 

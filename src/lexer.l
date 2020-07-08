@@ -4,7 +4,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include "token.h"
+    #include "parser.tab.h"
     int g = 0;
     int lineno = 1; // initialize to 1
     void yyerror();
@@ -147,7 +147,3 @@ void yyerror(char *message){
     exit(1);
 }
 
-void main()
-{
-    while( yylex()!= -1);
-}
