@@ -124,6 +124,37 @@ void debug(char* s)
     main:
         | funDecr main
         | varDec main
+        | if_expr main {debug("FOUND IF DEC");}
+        | if_else_expr main {debug("FOUND IF/else DEC");}
+
+
+//TEST
+        if_expr: if_main 
+               ;
+
+        if_else_expr: if_main KEYWORD_STRICT_ELSE LBRACE block RBRACE 
+                    ;
+        
+        if_main: KEYWORD_STRICT_IF LPAREN exprs RPAREN LBRACE block RBRACE
+               ; 
+               
+        exprs: expr
+             | expr EQUOP expr
+             | expr NEQUOP expr
+             | expr GT expr
+             | expr LT expr
+             | expr GTEQ expr
+             | expr LTEQ expr
+             ;
+        expr: ID
+            | STRING
+            | FCONST
+            | ICONST 
+            | KEYWORD_STRICT_TRUE
+            | KEYWORD_STRICT_FALSE
+            ;
+
+
 
 // FUNCTION DECLARATION
 

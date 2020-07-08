@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -708,9 +708,9 @@ char *yytext;
     int g = 0;
     int lineno = 1; // initialize to 1
     void yyerror();
-#line 712 "lex.yy.c"
+#line 711 "lex.yy.c"
 
-#line 714 "lex.yy.c"
+#line 713 "lex.yy.c"
 
 #define INITIAL 0
 #define ML_COMMENT 1
@@ -931,7 +931,7 @@ YY_DECL
 #line 26 "lexer.l"
 
 
-#line 935 "lex.yy.c"
+#line 934 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1485,7 +1485,7 @@ YY_RULE_SETUP
 #line 142 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1489 "lex.yy.c"
+#line 1488 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
