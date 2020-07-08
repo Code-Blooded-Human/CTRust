@@ -125,33 +125,56 @@ void debug(char* s)
         | funDecr main
         | varDec main
         | if_expr main {debug("FOUND IF DEC");}
-        | if_else_expr main {debug("FOUND IF/else DEC");}
 
 
-//TEST
-        if_expr: if_main 
+//IF ELSE BLOCK https://doc.rust-lang.org/stable/rust-by-example/flow_control/if_else.html
+
+        if_expr: if_main else_if_expr else_expr
                ;
 
-        if_else_expr: if_main KEYWORD_STRICT_ELSE LBRACE block RBRACE 
-                    ;
-        
-        if_main: KEYWORD_STRICT_IF LPAREN exprs RPAREN LBRACE block RBRACE
+        if_main: KEYWORD_STRICT_IF exprs LBRACE block RBRACE
                ; 
-               
+
+        else_expr: 
+                 | KEYWORD_STRICT_ELSE LBRACE block RBRACE 
+                 ;
+
+        else_if_expr: 
+                 | else_if_expr KEYWORD_STRICT_ELSE if_main
+                 ;
+        
+
+
+        
+
+
         exprs: expr
-             | expr EQUOP expr
-             | expr NEQUOP expr
-             | expr GT expr
-             | expr LT expr
-             | expr GTEQ expr
-             | expr LTEQ expr
+             | expr ANDOP exprs
+             | expr OROP exprs
              ;
-        expr: ID
+
+        expr: expression EQUOP expr
+             | expression NEQUOP expr
+             | expression GT expr
+             | expression LT expr
+             | expression GTEQ expr
+             | expression LTEQ expr
+             | expression
+             | KEYWORD_STRICT_TRUE
+             | KEYWORD_STRICT_FALSE
+             ;
+
+        expression: term MULOP expression
+                  | term DIVOP expression
+                  | term ADDOP expression
+                  | term SUBOP expression
+                  | term
+
+
+        term: ID
             | STRING
             | FCONST
             | ICONST 
-            | KEYWORD_STRICT_TRUE
-            | KEYWORD_STRICT_FALSE
             ;
 
 
