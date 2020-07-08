@@ -15,9 +15,10 @@
 alpha       [a-zA-Z]
 digit       [0-9]
 alnum       {alpha}|{digit}
+alnumSp     {alpha}|{digit}|"!"|"_"
 print       [ -~]
 
-ID          {alpha}+{alnum}*
+ID          {alpha}+{alnumSp}*
 ICONST      "0"|[0-9]{digit}*
 FCONST      "0"|{digit}*"."{digit}+
 CCONST      (\'{print}\')|(\'\\[nftrbv]\')

@@ -124,9 +124,20 @@ void debug(char* s)
     main:
         | funDecr main
         | varDec main
-        | if_expr main {debug("FOUND IF DEC");}
+    ;
 
 
+
+
+// because of structures idents can be of type ident.ident
+    
+    ident: ID
+        | ident DOT ident
+        ; 
+
+// exp stands for anything that can come after =
+    
+   
 //IF ELSE BLOCK https://doc.rust-lang.org/stable/rust-by-example/flow_control/if_else.html
 
         if_expr: if_main else_if_expr else_expr
@@ -171,7 +182,7 @@ void debug(char* s)
                   | term
 
 
-        term: ID
+        term: ident
             | STRING
             | FCONST
             | ICONST 
@@ -181,11 +192,11 @@ void debug(char* s)
 
 // FUNCTION DECLARATION
 
-    funDecr: KEYWORD_STRICT_FN ID LPAREN maybeParamList RPAREN maybeFnReturn LBRACE block RBRACE {debug("FOUND FUNCTION DEC");}
+    funDecr: KEYWORD_STRICT_FN ident LPAREN maybeParamList RPAREN maybeFnReturn LBRACE block RBRACE {debug("FOUND FUNCTION DEC");}
     ;
 
     //params for function
-        param: ID COLON ID
+        param: ident COLON ident
         ;
         maybeParamList:
             |paramList
@@ -196,14 +207,31 @@ void debug(char* s)
     
     // Function return
     maybeFnReturn:
-        | ARROW ID
+        | ARROW ident
         ;
 
+// Function Call
+    funCall: ident LPAREN maybeCallParamList RPAREN 
+    ;
+    funcCallStmt: funCall SEMI {printf("FOUND A CALL STATEMENT \n");}
+    ;
+    callParam: ident
+        | STRING
+        | FCONST
+        | ICONST
+        | funCall
+    ;
+    maybeCallParamList:
+        | callParamList
+    ;
+    callParamList: callParam
+        | callParamList COMMA callParam
+    ;
 
 // variable and const declaration: https://www.w3adda.com/rust-tutorial/rust-variables#:~:text=Declaring%20Variables%20In%20Rust,to%20hold%20in%20that%20variable.
     
-    varDec: KEYWORD_STRICT_LET maybeMut ID maybeType maybeAssign SEMI { debug("FOUND varDec"); }
-        | KEYWORD_STRICT_CONST ID maybeType maybeAssign SEMI { debug("FOUND varDec const"); }
+    varDec: KEYWORD_STRICT_LET maybeMut ident maybeType maybeAssign SEMI { debug("FOUND varDec"); }
+        | KEYWORD_STRICT_CONST ident maybeType maybeAssign SEMI { debug("FOUND varDec const"); }
     ;
     
     maybeMut:
@@ -211,21 +239,24 @@ void debug(char* s)
     ;
 
     maybeType:
-        | COLON ID
+        | COLON ident
     ;
 
     maybeAssign:
         | ASSIGN var
     ;
 
-    var: ID
+    var: ident
         | STRING
         | FCONST
         | ICONST
     ;
 
 // block is grammer for everything that can come btw {}
-    block: {debug("FOUND BLOCK");}
+    block: 
+        | if_expr block {debug("FOUND IF DEC");}
+        | funcCallStmt block
+        | varDec block
     ;
 
 
