@@ -126,7 +126,7 @@ STRING      \"{print}*\"
 "&"             {  return REFER;   }
 "_"             { return UNDERSCORE; }
 "#"             { return HASH;}
-
+"->"            { return ARROW; }
 {ID}            {  return ID;   }
 {ICONST}        {  return ICONST;   }
 {FCONST}        {  return FCONST;   }

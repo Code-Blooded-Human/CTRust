@@ -134,10 +134,11 @@ extern int yydebug;
     ID = 340,
     UNDERSCORE = 341,
     HASH = 342,
-    ICONST = 343,
-    FCONST = 344,
-    CCONST = 345,
-    STRING = 346
+    ARROW = 343,
+    ICONST = 344,
+    FCONST = 345,
+    CCONST = 346,
+    STRING = 347
   };
 #endif
 

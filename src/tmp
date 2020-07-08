@@ -209,3 +209,23 @@ exp:      NUM             { $$ = $1;         }
       /* Unary minus    */
         | exp 'n'         { $$ = -$1;        }
 ;
+
+
+
+// expr refers to expressions that end with semicolon.
+    expr:
+    | expr varDec expr
+    ;
+
+// exprBlock refers to if(){} and loop block
+    exprBlock:
+    ;
+
+
+// BLOCK refers to anything that comes inside {}
+    block:
+    | block block
+    | expr
+    | exprBlock
+    ;
+%%

@@ -13,6 +13,16 @@
 extern int yylex();
 extern void yyerror(char const *s);
 extern char *yytext;
+
+int isDebug = 1;
+void debug(char* s)
+{
+    if(isDebug == 1)
+    {
+        printf("%s \n",s);
+    }
+}
+
 %}
 
 
@@ -101,15 +111,70 @@ extern char *yytext;
 %token ID
 %token UNDERSCORE
 %token HASH
+%token ARROW
+
 %token ICONST
 %token FCONST
 %token CCONST
 %token STRING
 
 %%
-expr:
-    | ICONST ADDOP ICONST { printf("MATCH");}
-;
+
+// main
+    main:
+        | funDecr main
+        | varDec main
+
+// FUNCTION DECLARATION
+
+    funDecr: KEYWORD_STRICT_FN ID LPAREN maybeParamList RPAREN maybeFnReturn LBRACE block RBRACE {debug("FOUND FUNCTION DEC");}
+    ;
+
+    //params for function
+        param: ID COLON ID
+        ;
+        maybeParamList:
+            |paramList
+        ;
+        paramList: param
+            | paramList COMMA param
+        ;
+    
+    // Function return
+    maybeFnReturn:
+        | ARROW ID
+        ;
+
+
+// variable and const declaration: https://www.w3adda.com/rust-tutorial/rust-variables#:~:text=Declaring%20Variables%20In%20Rust,to%20hold%20in%20that%20variable.
+    
+    varDec: KEYWORD_STRICT_LET maybeMut ID maybeType maybeAssign SEMI { debug("FOUND varDec"); }
+        | KEYWORD_STRICT_CONST ID maybeType maybeAssign SEMI { debug("FOUND varDec const"); }
+    ;
+    
+    maybeMut:
+        | KEYWORD_STRICT_MUT
+    ;
+
+    maybeType:
+        | COLON ID
+    ;
+
+    maybeAssign:
+        | ASSIGN var
+    ;
+
+    var: ID
+        | STRING
+        | FCONST
+        | ICONST
+    ;
+
+// block is grammer for everything that can come btw {}
+    block: {debug("FOUND BLOCK");}
+    ;
+
+
 %%
 
 void main() 
