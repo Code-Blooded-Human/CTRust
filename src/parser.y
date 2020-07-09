@@ -175,7 +175,7 @@ void debug(char* s)
         if_expr: if_main else_if_expr else_expr
                ;
 
-        if_main: KEYWORD_STRICT_IF exprs LBRACE block RBRACE
+        if_main: KEYWORD_STRICT_IF exp LBRACE block RBRACE
                ; 
 
         else_expr: 
@@ -231,6 +231,26 @@ void debug(char* s)
         while_loop: KEYWORD_STRICT_WHILE exprs LBRACE block RBRACE
                   | KEYWORD_STRICT_LOOP LBRACE block RBRACE
                   ;
+
+// For Loop Declaration
+
+        for_loop: KEYWORD_STRICT_FOR ident KEYWORD_STRICT_IN for_range LBRACE block RBRACE
+                ;
+
+        for_range: for_exp DOTDOT for_exp
+                 ;
+
+
+        for_exp: ident
+               | ICONST
+               | FCONST
+               | for_exp MULOP for_exp
+               | for_exp DIVOP for_exp
+               | for_exp SUBOP for_exp
+               | for_exp ADDOP for_exp
+               | for_exp MODOP for_exp
+               | LPAREN for_exp RPAREN
+        ;
 
 //struct declaration
   
@@ -326,6 +346,7 @@ void debug(char* s)
 // block is grammer for everything that can come btw {}
     block: 
         | if_expr block {debug("FOUND IF DEC");}
+        | for_loop block {debug("FOUND FOR LOOP");}
         | funcCallStmt block
         | varDec block
         | while_loop block {debug("Found while loop");}
