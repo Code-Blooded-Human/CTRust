@@ -218,6 +218,7 @@ void debug(char* s)
 // While Loop declaration
         
         while_loop: KEYWORD_STRICT_WHILE exprs LBRACE block RBRACE
+                  | KEYWORD_STRICT_LOOP LBRACE block RBRACE
                   ;
 
 
