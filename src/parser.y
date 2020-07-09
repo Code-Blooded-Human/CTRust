@@ -194,6 +194,7 @@ void debug(char* s)
              | expression LTEQ expr
              | KEYWORD_STRICT_TRUE
              | KEYWORD_STRICT_FALSE
+             | NOTOP expr
              | expression
              | LPAREN expression RPAREN 
              | LPAREN expr RPAREN 
