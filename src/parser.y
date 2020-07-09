@@ -215,6 +215,11 @@ void debug(char* s)
             | ICONST 
             ;
 
+// While Loop declaration
+        
+        while_loop: KEYWORD_STRICT_WHILE exprs LBRACE block RBRACE
+                  ;
+
 
 
 // FUNCTION DECLARATION
@@ -280,6 +285,7 @@ void debug(char* s)
         | if_expr block {debug("FOUND IF DEC");}
         | funcCallStmt block
         | varDec block
+        | while_loop block {debug("Found while loop");}
     ;
 
 
