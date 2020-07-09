@@ -175,15 +175,15 @@ void debug(char* s)
         else_if_expr: 
                  | else_if_expr KEYWORD_STRICT_ELSE if_main
                  ;
-        
 
 
-        
-
+        //Adding parenthesis to these expressions led to 6 rr conflicts
 
         exprs: expr
              | expr ANDOP exprs
              | expr OROP exprs
+             | LPAREN exprs RPAREN
+             | LPAREN expr RPAREN
              ;
 
         expr: expression EQUOP expr
@@ -192,9 +192,11 @@ void debug(char* s)
              | expression LT expr
              | expression GTEQ expr
              | expression LTEQ expr
-             | expression
              | KEYWORD_STRICT_TRUE
              | KEYWORD_STRICT_FALSE
+             | expression
+             | LPAREN expression RPAREN 
+             | LPAREN expr RPAREN 
              ;
 
         expression: term MULOP expression
@@ -202,6 +204,8 @@ void debug(char* s)
                   | term ADDOP expression
                   | term SUBOP expression
                   | term
+                  | LPAREN term RPAREN 
+                  | LPAREN expression RPAREN 
 
 
         term: ident
