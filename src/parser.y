@@ -136,7 +136,29 @@ void debug(char* s)
         ; 
 
 // exp stands for anything that can come after =
-    
+    exp: STRING
+        | extendExp
+    ;
+    extendExp: ident
+        | KEYWORD_STRICT_TRUE
+        | KEYWORD_STRICT_FALSE
+        | ICONST
+        | FCONST
+        | funCall
+        | extendExp MULOP extendExp
+        | extendExp DIVOP extendExp
+        | extendExp SUBOP extendExp
+        | extendExp ADDOP extendExp
+        | extendExp EQUOP extendExp
+        | extendExp NEQUOP extendExp 
+        | extendExp GT extendExp 
+        | extendExp GTEQ extendExp 
+        | extendExp LT extendExp 
+        | extendExp LTEQ extendExp 
+        | extendExp ANDOP extendExp
+        | extendExp OROP extendExp
+        | LPAREN extendExp RPAREN
+    ;
    
 //IF ELSE BLOCK https://doc.rust-lang.org/stable/rust-by-example/flow_control/if_else.html
 
@@ -215,11 +237,7 @@ void debug(char* s)
     ;
     funcCallStmt: funCall SEMI {printf("FOUND A CALL STATEMENT \n");}
     ;
-    callParam: ident
-        | STRING
-        | FCONST
-        | ICONST
-        | funCall
+    callParam: exp
     ;
     maybeCallParamList:
         | callParamList
@@ -243,7 +261,7 @@ void debug(char* s)
     ;
 
     maybeAssign:
-        | ASSIGN var
+        | ASSIGN exp
     ;
 
     var: ident
