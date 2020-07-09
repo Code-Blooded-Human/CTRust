@@ -124,6 +124,7 @@ void debug(char* s)
     main:
         | funDecr main
         | varDec main
+        | struct_dec main
     ;
 
 
@@ -178,7 +179,7 @@ void debug(char* s)
                  ;
 
 
-        //Adding parenthesis to these expressions led to 6 rr conflicts
+//Adding parenthesis to these expressions led to 6 rr conflicts
 
         exprs: expr
              | expr ANDOP exprs
@@ -221,6 +222,27 @@ void debug(char* s)
         while_loop: KEYWORD_STRICT_WHILE exprs LBRACE block RBRACE
                   | KEYWORD_STRICT_LOOP LBRACE block RBRACE
                   ;
+
+//struct declaration
+  
+        struct_dec: KEYWORD_STRICT_STRUCT ident struct_def {debug("Found struct dec");}
+                  ;
+
+        struct_def: LBRACE struct_block RBRACE
+                  | LPAREN struct_tuple RPAREN SEMI
+                  ;
+
+        struct_tuple: 
+                    | ident COMMA struct_tuple
+                    | ident
+                    ;
+
+        struct_block:
+                | ident COLON data_type COMMA struct_block
+                ;
+
+        data_type: ident
+                 ;
 
 
 
@@ -288,8 +310,14 @@ void debug(char* s)
         | funcCallStmt block
         | varDec block
         | while_loop block {debug("Found while loop");}
+        | struct_dec block
     ;
 
+
+    
+    
+
+    
 
 %%
 
