@@ -12,9 +12,22 @@ fn main()
 
 fn main()-> i32
 {
-    let a = 5;
-    if a > 10 || b < 5
+    let a = !b;
+    let a = c++;
+    
+    if a++ + 5 == true || t < 5
     {
-        print!(printf("hi",a,3),ab.len("HI"));
+        
+    }
+    print!(printf("hi",a,3),ab.len("HI"));
+    while !done {
+       
+    
+        println!("{}", x);
+    
+        if x % 5 == 0 {
+            done = true;
+        }
     }
 }
+    

@@ -15,10 +15,10 @@
 alpha       [a-zA-Z]
 digit       [0-9]
 alnum       {alpha}|{digit}
-alnumSp     {alpha}|{digit}|"!"|"_"
+alnumSp     {alpha}|{digit}|"_"
 print       [ -~]
 
-ID          {alpha}+{alnumSp}*
+ID          {alpha}+{alnumSp}*+"!"?
 ICONST      "0"|[0-9]{digit}*
 FCONST      "0"|{digit}*"."{digit}+
 CCONST      (\'{print}\')|(\'\\[nftrbv]\')
@@ -101,6 +101,7 @@ STRING      \"{print}*\"
 "-"                     {  return SUBOP;   }
 "*"                     {  return MULOP;   }
 "/"                     {  return DIVOP;   }
+"%"                     {  return MODOP;   }
 "++" 			{  return INCR;   }
 "--"                    {  return DECR;   }
 "||"                    {  return OROP;   }

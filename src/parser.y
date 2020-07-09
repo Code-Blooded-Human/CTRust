@@ -88,6 +88,7 @@ void debug(char* s)
 %token DECR
 %token OROP
 %token ANDOP
+%token MODOP
 %token NOTOP
 %token EQUOP
 %token NEQUOP
@@ -125,6 +126,7 @@ void debug(char* s)
         | funDecr main
         | varDec main
         | struct_dec main
+        | varAssign
     ;
 
 
@@ -151,6 +153,7 @@ void debug(char* s)
         | extendExp DIVOP extendExp
         | extendExp SUBOP extendExp
         | extendExp ADDOP extendExp
+        | extendExp MODOP extendExp
         | extendExp EQUOP extendExp
         | extendExp NEQUOP extendExp 
         | extendExp GT extendExp 
@@ -159,6 +162,11 @@ void debug(char* s)
         | extendExp LTEQ extendExp 
         | extendExp ANDOP extendExp
         | extendExp OROP extendExp
+        | NOTOP extendExp
+        | INCR extendExp
+        | DECR extendExp
+        | extendExp INCR
+        | extendExp DECR
         | LPAREN extendExp RPAREN
     ;
    
@@ -206,6 +214,7 @@ void debug(char* s)
                   | term DIVOP expression
                   | term ADDOP expression
                   | term SUBOP expression
+                  | term MODOP expression
                   | term
                   | LPAREN term RPAREN 
                   | LPAREN expression RPAREN 
@@ -304,6 +313,16 @@ void debug(char* s)
         | ICONST
     ;
 
+// variable assign:
+    varAssign : ident ASSIGN exp SEMI {debug("var assign");}
+    ;
+
+
+// break stmt
+    breakStmt: KEYWORD_STRICT_BREAK SEMI
+        | KEYWORD_STRICT_BREAK exp SEMI
+        ;
+
 // block is grammer for everything that can come btw {}
     block: 
         | if_expr block {debug("FOUND IF DEC");}
@@ -311,6 +330,8 @@ void debug(char* s)
         | varDec block
         | while_loop block {debug("Found while loop");}
         | struct_dec block
+        | breakStmt block
+        | varAssign block
     ;
 
 

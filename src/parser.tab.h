@@ -1,8 +1,9 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+/* A Bison parser, made by GNU Bison 3.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2019 Free Software Foundation,
+   Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,6 +30,9 @@
 
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
+
+/* Undocumented macros, especially those whose name start with YY_,
+   are private implementation details.  Do not rely on them.  */
 
 #ifndef YY_YY_PARSER_TAB_H_INCLUDED
 # define YY_YY_PARSER_TAB_H_INCLUDED
@@ -107,34 +111,35 @@ extern int yydebug;
     DECR = 317,
     OROP = 318,
     ANDOP = 319,
-    NOTOP = 320,
-    EQUOP = 321,
-    NEQUOP = 322,
-    GT = 323,
-    LT = 324,
-    GTEQ = 325,
-    LTEQ = 326,
-    COLON = 327,
-    LPAREN = 328,
-    RPAREN = 329,
-    LBRACK = 330,
-    RBRACK = 331,
-    LBRACE = 332,
-    RBRACE = 333,
-    SEMI = 334,
-    DOTDOT = 335,
-    DOT = 336,
-    COMMA = 337,
-    ASSIGN = 338,
-    REFER = 339,
-    ID = 340,
-    UNDERSCORE = 341,
-    HASH = 342,
-    ARROW = 343,
-    ICONST = 344,
-    FCONST = 345,
-    CCONST = 346,
-    STRING = 347
+    MODOP = 320,
+    NOTOP = 321,
+    EQUOP = 322,
+    NEQUOP = 323,
+    GT = 324,
+    LT = 325,
+    GTEQ = 326,
+    LTEQ = 327,
+    COLON = 328,
+    LPAREN = 329,
+    RPAREN = 330,
+    LBRACK = 331,
+    RBRACK = 332,
+    LBRACE = 333,
+    RBRACE = 334,
+    SEMI = 335,
+    DOTDOT = 336,
+    DOT = 337,
+    COMMA = 338,
+    ASSIGN = 339,
+    REFER = 340,
+    ID = 341,
+    UNDERSCORE = 342,
+    HASH = 343,
+    ARROW = 344,
+    ICONST = 345,
+    FCONST = 346,
+    CCONST = 347,
+    STRING = 348
   };
 #endif
 
