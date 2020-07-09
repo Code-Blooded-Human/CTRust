@@ -145,6 +145,7 @@ void debug(char* s)
         | ICONST
         | FCONST
         | funCall
+        | if_expr
         | extendExp MULOP extendExp
         | extendExp DIVOP extendExp
         | extendExp SUBOP extendExp
