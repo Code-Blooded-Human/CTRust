@@ -298,7 +298,7 @@ void debug(char* s)
 // Function Call
     funCall: ident LPAREN maybeCallParamList RPAREN 
     ;
-    funcCallStmt: funCall SEMI {printf("FOUND A CALL STATEMENT \n");}
+    funcCallStmt: funCall SEMI 
     ;
     callParam: exp
     ;
@@ -314,6 +314,8 @@ void debug(char* s)
     varDec: KEYWORD_STRICT_LET maybeMut ident maybeType maybeAssign SEMI { debug("FOUND varDec"); }
         | KEYWORD_STRICT_CONST ident maybeType maybeAssign SEMI { debug("FOUND varDec const"); }
     ;
+
+
     
     maybeMut:
         | KEYWORD_STRICT_MUT
@@ -325,7 +327,26 @@ void debug(char* s)
 
     maybeAssign:
         | ASSIGN exp
+        | ASSIGN ident RBRACK vecValue LBRACK
+        | ASSIGN ident COLON COLON funCall
+        ;
     ;
+
+//Vectors
+
+    vecValue: vecValueTypeOne
+            | vecValueTypeTwo
+            ;
+
+    vecValueTypeOne: for_exp
+            | for_exp COMMA vecValue
+            ;
+
+    vecValueTypeTwo: for_exp SEMI for_exp
+            ;
+
+
+     
 
     var: ident
         | STRING
@@ -347,7 +368,7 @@ void debug(char* s)
     block: 
         | if_expr block {debug("FOUND IF DEC");}
         | for_loop block {debug("FOUND FOR LOOP");}
-        | funcCallStmt block
+        | funcCallStmt block {debug("FOUND A CALL STATEMENT");}
         | varDec block
         | while_loop block {debug("Found while loop");}
         | struct_dec block
