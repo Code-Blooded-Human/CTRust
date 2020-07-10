@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -740,9 +740,9 @@ char *yytext;
     int g = 0;
     int lineno = 1; // initialize to 1
     void yyerror();
-#line 743 "lex.yy.c"
+#line 744 "lex.yy.c"
 
-#line 745 "lex.yy.c"
+#line 746 "lex.yy.c"
 
 #define INITIAL 0
 #define ML_COMMENT 1
@@ -963,7 +963,7 @@ YY_DECL
 #line 27 "lexer.l"
 
 
-#line 966 "lex.yy.c"
+#line 967 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1023,17 +1023,17 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 29 "lexer.l"
-{ printf("Eat up comment at line %d\n", lineno); }
+{  }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 31 "lexer.l"
-{ printf("Eat up comment from line %d ", lineno); BEGIN(ML_COMMENT); }
+{ BEGIN(ML_COMMENT); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 32 "lexer.l"
-{ printf("to line %d\n", lineno); BEGIN(INITIAL); }
+{  BEGIN(INITIAL); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
@@ -1499,7 +1499,7 @@ YY_RULE_SETUP
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ML_COMMENT):
 #line 138 "lexer.l"
-{ printf("EOF"); g=1; return -1;}
+{ g=1; return -1;}
 	YY_BREAK
 case 96:
 /* rule 96 can match eol */
@@ -1522,7 +1522,7 @@ YY_RULE_SETUP
 #line 144 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1525 "lex.yy.c"
+#line 1526 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{

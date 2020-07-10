@@ -26,10 +26,10 @@ STRING      \"{print}*\"
 
 %%
 
-"//".*                  { printf("Eat up comment at line %d\n", lineno); }
+"//".*                  {  }
 
-"/*"                    { printf("Eat up comment from line %d ", lineno); BEGIN(ML_COMMENT); }
-<ML_COMMENT>"*/"        { printf("to line %d\n", lineno); BEGIN(INITIAL); }
+"/*"                    { BEGIN(ML_COMMENT); }
+<ML_COMMENT>"*/"        {  BEGIN(INITIAL); }
 <ML_COMMENT>[^*\n]+
 <ML_COMMENT>"*"
 <ML_COMMENT>"\n"        { lineno += 1; }
@@ -135,7 +135,7 @@ STRING      \"{print}*\"
 {CCONST}        {  return CCONST;   }
 {STRING}        {  return STRING;   }
 
-<<EOF>>         { printf("EOF"); g=1; return -1;}
+<<EOF>>         { g=1; return -1;}
 "\n"            { lineno += 1; }
 [ \t\r\f]+          /* eat up whitespace */
 

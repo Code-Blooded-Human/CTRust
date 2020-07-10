@@ -10,11 +10,88 @@
 
 %{
 #include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+#define YYSTYPE char*
+
 extern int yylex();
 extern void yyerror(char const *s);
 extern char *yytext;
+extern int lineno;
 
-int isDebug = 1;
+int fdlineno =0;
+
+struct fnIdent
+{
+    char * name;
+    int paramNo;
+    int lineNo;
+} fIdent[100], cIdent[100];
+int fSize = 0;
+int cSize = 0;
+void saveFnIdent(char *name,int paramNo,int lineNo)
+{
+    for( int i=0; i<fSize;i++)
+    {
+        if(strcmp(name,fIdent[i].name)==0)
+        {
+            printf(" Error: Function %s already defined. \n.",name);
+        }
+    }
+    fIdent[fSize].name = malloc(50*sizeof(char));
+    strcpy(fIdent[fSize].name,name);
+    fIdent[fSize].paramNo = paramNo;
+    fSize++;
+}
+void saveCIdent(char *name,int paramNo,int lineNo)
+{
+    cIdent[cSize].name = malloc(50*sizeof(char));
+    strcpy(cIdent[cSize].name,name);
+    cIdent[cSize].paramNo = paramNo;
+    cIdent[cSize].lineNo = lineNo;
+    cSize++;
+}
+void printFnIndent()
+{
+    for(int i=0;i<fSize;i++)
+    {
+        printf(" {%s} %d \n",fIdent[i].name,fIdent[i].paramNo);
+    }
+}
+void printCIndent()
+{
+    for(int i=0;i<cSize;i++)
+    {
+        printf(" {%s} %d \n",cIdent[i].name,cIdent[i].paramNo);
+    }
+}
+
+void fnDeclared()
+{
+    for(int i = 0; i < cSize;i++)
+    {
+        int d = 0;
+        for(int j=0;j<fSize;j++)
+        {
+            if(strcmp(cIdent[i].name,fIdent[j].name)==0)
+            {
+                if(cIdent[i].paramNo != fIdent[i].paramNo)
+                {
+                    printf("Error:  function call: %s at line %d  has wrong number of parameters passed. \n",cIdent[i].name,cIdent[i].lineNo );
+                }
+                d = 1;
+            }
+        }
+        if ( d == 0)
+        {
+            printf("Error:  %s is not defined but used on line: %d \n",cIdent[i].name,cIdent[i].lineNo);
+        }
+    }
+}
+
+
+int isDebug = 0;
 void debug(char* s)
 {
     if(isDebug == 1)
@@ -22,6 +99,9 @@ void debug(char* s)
         printf("%s \n",s);
     }
 }
+
+
+
 
 %}
 
@@ -35,7 +115,7 @@ void debug(char* s)
 %token KEYWORD_STRICT_ENUM
 %token KEYWORD_STRICT_EXTERN
 %token KEYWORD_STRICT_FALSE
-%token KEYWORD_STRICT_FN
+%token KEYWORD_STRICT_FN 
 %token KEYWORD_STRICT_FOR
 %token KEYWORD_STRICT_IF
 %token KEYWORD_STRICT_IMPL
@@ -134,7 +214,7 @@ void debug(char* s)
 
 // because of structures idents can be of type ident.ident
     
-    ident: ID
+    ident: ID { yyval = malloc(100*sizeof(char)); strcpy(yyval,yytext); }
         | ident DOT ident
         ; 
 
@@ -277,17 +357,17 @@ void debug(char* s)
 
 // FUNCTION DECLARATION
 
-    funDecr: KEYWORD_STRICT_FN ident LPAREN maybeParamList RPAREN maybeFnReturn LBRACE block RBRACE {debug("FOUND FUNCTION DEC");}
+    funDecr: KEYWORD_STRICT_FN ident LPAREN maybeParamList RPAREN maybeFnReturn LBRACE block RBRACE {saveFnIdent($2,atoi($4),fdlineno);debug("FOUND FUNCTION DEC");}
     ;
 
     //params for function
         param: ident COLON ident
         ;
-        maybeParamList:
-            |paramList
+        maybeParamList: {$$ = "0"; fdlineno = lineno;}
+            |paramList {$$ = $1; fdlineno = lineno;}
         ;
-        paramList: param
-            | paramList COMMA param
+        paramList: param { $$ = "1";}
+            | paramList COMMA param  { char *g = malloc(10*sizeof(char)); sprintf(g, "%d", atoi($1)+1); $$ = g;}
         ;
     
     // Function return
@@ -296,17 +376,17 @@ void debug(char* s)
         ;
 
 // Function Call
-    funCall: ident LPAREN maybeCallParamList RPAREN 
+    funCall: ident LPAREN maybeCallParamList RPAREN {saveCIdent($1,atoi($3),lineno);}
     ;
-    funcCallStmt: funCall SEMI {printf("FOUND A CALL STATEMENT \n");}
+    funcCallStmt: funCall SEMI {}
     ;
     callParam: exp
     ;
-    maybeCallParamList:
-        | callParamList
+    maybeCallParamList: {$$ = "0";}
+        | callParamList {$$ = $1;}
     ;
-    callParamList: callParam
-        | callParamList COMMA callParam
+    callParamList: callParam { $$ = "1";}
+        | callParamList COMMA callParam { char *a = malloc(10*sizeof(char)); sprintf(a, "%d", atoi($1)+1); $$ = a;}
     ;
 
 // variable and const declaration: https://www.w3adda.com/rust-tutorial/rust-variables#:~:text=Declaring%20Variables%20In%20Rust,to%20hold%20in%20that%20variable.
@@ -366,4 +446,6 @@ void debug(char* s)
 void main() 
  { 
   yyparse(); 
+
+  fnDeclared();
  } 
