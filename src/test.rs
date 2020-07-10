@@ -1,14 +1,17 @@
 
+fn main( a : i32 , b:i32, c:a)
+{
+
+}
+fn test()
+{
+    main(a,c);
+    r();
+}
 fn main()
 {
-    let a.b = (5 && (3) ) || (a == b) ;
-    
-    if a > 10 || b < 5
-    {
-        print(a);
-    }
-}
 
+}
 
 fn main()-> i32
 {
