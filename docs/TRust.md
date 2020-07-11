@@ -57,13 +57,35 @@ const con = "test";
 const cont : i32 = 5;
 ```
 # Structs
-## syntax
+[Reference from official documentation](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
+## syntax for declaration
+struct ``identifier`` { ``identifier``:``type``,``identifier``:``type``,..}<br>
+```rust
+struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+```
+## syntax for using
+```rust
+let mut user1 = User {
+    email: String::from("someone@example.com"),
+    username: String::from("someusername123"),
+    active: true,
+    sign_in_count: 1,
+};
+
+user1.email = String::from("anotheremail@example.com");
+```
 
 # Vectors
 ## syntax
 
 
 # Functions
+[Reference from official documentation](https://doc.rust-lang.org/book/ch03-03-how-functions-work.html)<br>
 main is the entry point function, all valid rust programs should have main function. The syntax analyser checks for valid defination of main. The main function cannot be called by user.
 ## Syntax for declaration of functions.
 fn ``indentifier``(){``code``} <br>
@@ -91,6 +113,7 @@ sqaure();
 ```
 
 # Conditionals
+[Reference from offical documentation](https://doc.rust-lang.org/book/ch03-05-control-flow.html) <br>
 ## syntax
 ``if`` ``expression`` { ``code`` } <br>
 ``if`` ``expression`` { ``code`` } else {``code``}<br>
@@ -117,7 +140,30 @@ if number < 5 {
 ```
 
 # Loops
-## for syntax
-## while loop
+[Reference from offical documentation](https://doc.rust-lang.org/1.2.0/book/for-loops.html) <br>
+## for loop syntax
+for ``variable`` ``start_int``..``stop_int``{``code``}
+```rust
+for x in 0..10 {
+    if x % 2 == 0 { continue; }
+    if x == 8 {break;}
+    println!("{}", x);
+}
+```
+## while loop syntax
+while ``boolean_conditon`` {``code``}
+```rust
+let mut x = 5; // mut x: i32
+let mut done = false; // mut done: bool
 
+while !done {
+    x += x - 3;
+
+    println!("{}", x);
+
+    if x % 5 == 0 {
+        done = true;
+    }
+}
+```
 
