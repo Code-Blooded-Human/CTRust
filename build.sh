@@ -3,9 +3,10 @@
 rm  ./build/TRustC
 
 cd ./src
-    bison -d parser.y
+    bison -d parser.y 2> /dev/null
     if [[ $? -ne 0 ]]; then
     echo -e "Parsing error \n";
+    bison -d parser.y
     fi
     flex lexer.l
     gcc -o ./TRustC parser.tab.c lex.yy.c

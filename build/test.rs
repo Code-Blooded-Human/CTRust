@@ -13,7 +13,8 @@ c += d;
 c = this.something;
 let mut k = 10;
 const k = 5;
-
+let v = vec![1, 2, 3, 4, 5];
+let c = v[1] * 5;
 
 
 // lt wrong = right;
@@ -64,7 +65,7 @@ let area_sqaure10x20 = area(10,20);
 a = area(area(area(a,area(area(a,b)*area(a,b),b)),b),a);
 a = area(a*3,b*7);
 a = area(10,b%5)%10;
-
+let c = v[area(3,1)*5] * 5;
 
 
 //Struct Declaration
@@ -75,7 +76,7 @@ struct User {
     sign_in_count: u64,
     active: bool,
 }
-
+let v = vec![1, 2, 3, 4, 5]; // v: Vec<i32>
 let user =  User { username:"Abishek",email:"abhisheks@iitbhilai.ac.in",sign_in_count:area(4,4),active : !false };
 // Using Tuple Structs without Named Fields to Create Different Types
 
@@ -90,9 +91,9 @@ fn main() // COMMENT MAIN TO GET AN ERROR
     // If these loops and if else block is used outside a function then parser will give error
 
     //If else block
-
+    let v = vec![1, 2, 3, 4, 5]; // v: Vec<i32>
     if n < -10 {
-        let mut a = b;
+        let mut a = v[2];
     } else if n > 0 {
         let mut a = c;
     } else {

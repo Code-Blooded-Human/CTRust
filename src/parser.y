@@ -275,6 +275,8 @@ void debug(char* s)
         | num
         | FCONST
         | funCall
+        | ident RBRACK vecValue LBRACK
+        | ident COLON COLON funCall
         //| ifExprVarDec
         | extendExp MULOP extendExp
         | extendExp DIVOP extendExp
@@ -352,6 +354,8 @@ void debug(char* s)
         for_exp: ident
                | num
                | FCONST
+               | funCall
+               | funCall for_exp
                | for_exp MULOP for_exp
                | for_exp DIVOP for_exp
                | for_exp SUBOP for_exp
@@ -443,9 +447,7 @@ void debug(char* s)
     ;
 
     maybeAssign:
-        | ASSIGN exp
-        | ASSIGN ident RBRACK vecValue LBRACK
-        | ASSIGN ident COLON COLON funCall
+        | ASSIGN exp 
         ;
     ;
 

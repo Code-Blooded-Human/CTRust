@@ -82,6 +82,12 @@ user1.email = String::from("anotheremail@example.com");
 
 # Vectors
 ## syntax
+```rust
+//defining vector
+let v = vec![1, 2, 3, 4, 5]; 
+// accessing value
+val  = v[10];
+```
 
 
 # Functions
