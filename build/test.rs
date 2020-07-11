@@ -76,7 +76,7 @@ struct User {
     active: bool,
 }
 
-
+let user =  User { username:"Abishek",email:"abhisheks@iitbhilai.ac.in",sign_in_count:area(4,4),active : !false };
 // Using Tuple Structs without Named Fields to Create Different Types
 
 struct Color(i32, i32, i32);
@@ -144,7 +144,7 @@ fn main() // COMMENT MAIN TO GET AN ERROR
         area(a*3,b*7);
     }
     
-
+   
 
 }
 

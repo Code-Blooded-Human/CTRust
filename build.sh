@@ -3,7 +3,7 @@
 rm  ./build/TRustC
 
 cd ./src
-    bison -d parser.y 2> /dev/null
+    bison -d parser.y
     if [[ $? -ne 0 ]]; then
     echo -e "Parsing error \n";
     fi

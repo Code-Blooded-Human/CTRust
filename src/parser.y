@@ -266,6 +266,7 @@ void debug(char* s)
 
 // exp stands for anything that can come after =
     exp: STRING
+        | struct_call
         | extendExp
     ;
     extendExp: ident
@@ -379,7 +380,14 @@ void debug(char* s)
 
         data_type: ident
                  ;
+        struct_call : ident LBRACE struct_list RBRACE
+        ;
 
+        struct_list: struct_item
+            | struct_item COMMA struct_list
+            ;
+        struct_item: ident COLON exp
+        ;
 
 
 // FUNCTION DECLARATION
@@ -394,7 +402,7 @@ void debug(char* s)
             |paramList {$$ = $1; fdlineno = lineno;}
         ;
         paramList: param { $$ = "1";}
-            | get return code of last command bashparamList COMMA param  { char *g = malloc(10*sizeof(char)); sprintf(g, "%d", atoi($1)+1); $$ = g;}
+            | paramList COMMA param  { char *g = malloc(10*sizeof(char)); sprintf(g, "%d", atoi($1)+1); $$ = g;}
         ;
     
     // Function return
