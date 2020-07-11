@@ -1,6 +1,7 @@
 
 // Global variables
-let a = 5;
+let a:i32 = 5;
+let var;
 let b = "Hi hello how are you!!";
 let d = true;
 let e = !d;
@@ -12,6 +13,7 @@ c += d;
 c = this.something;
 let mut k = 10;
 const k = 5;
+
 
 
 // lt wrong = right;

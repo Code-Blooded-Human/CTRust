@@ -413,7 +413,7 @@ void debug(char* s)
             |paramList {$$ = $1; fdlineno = lineno;}
         ;
         paramList: param { $$ = "1";}
-            | paramList COMMA param  { char *g = malloc(10*sizeof(char)); sprintf(g, "%d", atoi($1)+1); $$ = g;}
+            | get return code of last command bashparamList COMMA param  { char *g = malloc(10*sizeof(char)); sprintf(g, "%d", atoi($1)+1); $$ = g;}
         ;
     
     // Function return
