@@ -22,11 +22,23 @@ extern int lineno;
 
 int fdlineno =0;
 
+void red () {
+  printf("\033[1;31m");
+}
+
+void yellow() {
+  printf("\033[1;33m");
+}
+
+void reset () {
+  printf("\033[0m");
+}
 struct fnIdent
 {
     char * name;
     int paramNo;
     int lineNo;
+    int used;
 } fIdent[100], cIdent[100];
 int fSize = 0;
 int cSize = 0;
@@ -42,6 +54,7 @@ void saveFnIdent(char *name,int paramNo,int lineNo)
     fIdent[fSize].name = malloc(50*sizeof(char));
     strcpy(fIdent[fSize].name,name);
     fIdent[fSize].paramNo = paramNo;
+    fIdent[fSize].used = 0;
     fSize++;
 }
 void saveCIdent(char *name,int paramNo,int lineNo)
@@ -50,6 +63,7 @@ void saveCIdent(char *name,int paramNo,int lineNo)
     strcpy(cIdent[cSize].name,name);
     cIdent[cSize].paramNo = paramNo;
     cIdent[cSize].lineNo = lineNo;
+    cIdent[cSize].used = 0;
     cSize++;
 }
 void printFnIndent()
@@ -72,21 +86,53 @@ void fnDeclared()
     for(int i = 0; i < cSize;i++)
     {
         int d = 0;
+        if(strcmp(cIdent[i].name,"main")==0)
+        {
+            red();
+            printf("Error: Function main cannot be called! \n");
+            reset();
+        }
         for(int j=0;j<fSize;j++)
         {
+
             if(strcmp(cIdent[i].name,fIdent[j].name)==0)
             {
-                if(cIdent[i].paramNo != fIdent[i].paramNo)
+                if(cIdent[i].paramNo != fIdent[j].paramNo)
                 {
-                    printf("Error:  function call: %s at line %d  has wrong number of parameters passed. \n",cIdent[i].name,cIdent[i].lineNo );
+                    red();
+                    printf("Error:  function call: %s at line %d  has wrong number of parameters passed. expected %d, recivied %d \n",cIdent[i].name,cIdent[i].lineNo,fIdent[j].paramNo,cIdent[i].paramNo );
+                    reset();
                 }
                 d = 1;
+                fIdent[j].used = 1;
             }
         }
         if ( d == 0)
         {
+            red();
             printf("Error:  %s is not defined but used on line: %d \n",cIdent[i].name,cIdent[i].lineNo);
+            reset();
         }
+    }
+    int m = 0;
+    for(int i=0; i< fSize;i++)
+    {
+        if( strcmp(fIdent[i].name,"main")==0)
+        {
+            m=1;
+        }
+        else if(fIdent[i].used == 0)
+        {
+            yellow();
+            printf("Warning: Function %s is declared but never used! \n",fIdent[i].name);
+            reset();
+        }
+    }
+    if(m==0)
+    {
+        red();
+        printf("ERROR: Main function not defined! \n");
+        reset();
     }
 }
 
@@ -206,7 +252,7 @@ void debug(char* s)
         | funDecr main
         | varDec main
         | struct_dec main
-        | varAssign
+        | varAssign main
     ;
 
 
@@ -438,12 +484,23 @@ void debug(char* s)
 
 // variable assign:
     varAssign : ident ASSIGN exp SEMI {debug("var assign");}
+        | ident op ASSIGN exp SEMI
     ;
 
+    op: MULOP
+        | ADDOP
+        | SUBOP
+        | DIVOP
+        | MODOP
+    ;
 
 // break stmt
     breakStmt: KEYWORD_STRICT_BREAK SEMI
         | KEYWORD_STRICT_BREAK exp SEMI
+        ;
+// return stmt
+    returnStmt: KEYWORD_STRICT_RETURN SEMI
+        | KEYWORD_STRICT_RETURN exp SEMI
         ;
 
 // block is grammer for everything that can come btw {}
@@ -453,14 +510,15 @@ void debug(char* s)
         | funcCallStmt block {debug("FOUND A CALL STATEMENT");}
         | varDec block
         | while_loop block {debug("Found while loop");}
-        | struct_dec block
+        // | struct_dec block
         | breakStmt block
         | varAssign block
+        | returnStmt block
     ;
 
 
     
-    
+  
 
     
 
