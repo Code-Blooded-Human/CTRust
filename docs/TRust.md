@@ -6,12 +6,12 @@ This document outlines features of rust programming lanuage.
 
 
 - [Variables and Consts](#Variables\ Consts) 
+- [Structures](#Structs)
+- [Vectors](#vectors)
 - [Functions](#Functions)
 - [Conditionals](#Conditionals)
-- [Team](#team)
-- [FAQ](#faq)
-- [Support](#support)
-- [License](#license)
+- [Loops](#Loops)
+
 
 # Variables Consts
 [Reference from official documentation](https://doc.rust-lang.org/beta/book/ch03-01-variables-and-mutability.html)
@@ -101,7 +101,7 @@ if number < 5 {
     println!("condition was true");
 }
 
-if number < 5 {
+if number < (true || d) && (a && b) || false && true {
     println!("condition was true");
 } else {
     println!("condition was false");
