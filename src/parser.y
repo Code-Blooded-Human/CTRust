@@ -271,10 +271,10 @@ void debug(char* s)
     extendExp: ident
         | KEYWORD_STRICT_TRUE
         | KEYWORD_STRICT_FALSE
-        | ICONST
+        | num
         | FCONST
         | funCall
-        | if_expr
+        //| ifExprVarDec
         | extendExp MULOP extendExp
         | extendExp DIVOP extendExp
         | extendExp SUBOP extendExp
@@ -296,6 +296,10 @@ void debug(char* s)
         | LPAREN extendExp RPAREN
     ;
    
+        num: SUBOP  ICONST
+           | ICONST
+           ;
+
 //IF ELSE BLOCK https://doc.rust-lang.org/stable/rust-by-example/flow_control/if_else.html
 
         if_expr: if_main else_if_expr else_expr
@@ -313,48 +317,25 @@ void debug(char* s)
                  ;
 
 
+        //ifExprVarDec: ifMainVarDec elseIfVarDec elseVarDec
+                      //;
+        //ifMainVarDec: KEYWORD_STRICT_IF exp LBRACE block exp block RBRACE
+                      //;
+        //elseVarDec: 
+                    //| KEYWORD_STRICT_ELSE LBRACE block exp block RBRACE
+                    //;
+        //elseIfVarDec:
+                      //| elseIfVarDec KEYWORD_STRICT_ELSE ifMainVarDec
+                      //;
+ 
+
 //Adding parenthesis to these expressions led to 6 rr conflicts
 
-        exprs: expr
-             | expr ANDOP exprs
-             | expr OROP exprs
-             | LPAREN exprs RPAREN
-             | LPAREN expr RPAREN
-             ;
-
-        expr: expression EQUOP expr
-             | expression NEQUOP expr
-             | expression GT expr
-             | expression LT expr
-             | expression GTEQ expr
-             | expression LTEQ expr
-             | KEYWORD_STRICT_TRUE
-             | KEYWORD_STRICT_FALSE
-             | NOTOP expr
-             | expression
-             | LPAREN expression RPAREN 
-             | LPAREN expr RPAREN 
-             ;
-
-        expression: term MULOP expression
-                  | term DIVOP expression
-                  | term ADDOP expression
-                  | term SUBOP expression
-                  | term MODOP expression
-                  | term
-                  | LPAREN term RPAREN 
-                  | LPAREN expression RPAREN 
-
-
-        term: ident
-            | STRING
-            | FCONST
-            | ICONST 
-            ;
+        
 
 // While Loop declaration
         
-        while_loop: KEYWORD_STRICT_WHILE exprs LBRACE block RBRACE
+        while_loop: KEYWORD_STRICT_WHILE exp LBRACE block RBRACE
                   | KEYWORD_STRICT_LOOP LBRACE block RBRACE
                   ;
 
@@ -368,7 +349,7 @@ void debug(char* s)
 
 
         for_exp: ident
-               | ICONST
+               | num
                | FCONST
                | for_exp MULOP for_exp
                | for_exp DIVOP for_exp
@@ -479,7 +460,7 @@ void debug(char* s)
     var: ident
         | STRING
         | FCONST
-        | ICONST
+        | num
     ;
 
 // variable assign:
@@ -498,6 +479,11 @@ void debug(char* s)
     breakStmt: KEYWORD_STRICT_BREAK SEMI
         | KEYWORD_STRICT_BREAK exp SEMI
         ;
+//continue statement
+    continueStmt: KEYWORD_STRICT_CONTINUE SEMI
+        | KEYWORD_STRICT_CONTINUE exp SEMI
+        ;
+
 // return stmt
     returnStmt: KEYWORD_STRICT_RETURN SEMI
         | KEYWORD_STRICT_RETURN exp SEMI
@@ -512,6 +498,7 @@ void debug(char* s)
         | while_loop block {debug("Found while loop");}
         // | struct_dec block
         | breakStmt block
+        | continueStmt block
         | varAssign block
         | returnStmt block
     ;
