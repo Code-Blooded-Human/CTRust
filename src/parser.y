@@ -25,7 +25,9 @@ int fdlineno =0;
 void red () {
   printf("\033[1;31m");
 }
-
+void green () {
+  printf("\033[1;32m");
+}
 void yellow() {
   printf("\033[1;33m");
 }
@@ -48,7 +50,9 @@ void saveFnIdent(char *name,int paramNo,int lineNo)
     {
         if(strcmp(name,fIdent[i].name)==0)
         {
+            red();
             printf(" Error: Function %s already defined. \n.",name);
+            reset();
         }
     }
     fIdent[fSize].name = malloc(50*sizeof(char));
@@ -81,7 +85,7 @@ void printCIndent()
     }
 }
 
-void fnDeclared()
+int fnDeclared()
 {
     for(int i = 0; i < cSize;i++)
     {
@@ -91,6 +95,7 @@ void fnDeclared()
             red();
             printf("Error: Function main cannot be called! \n");
             reset();
+            return -1;
         }
         for(int j=0;j<fSize;j++)
         {
@@ -102,6 +107,7 @@ void fnDeclared()
                     red();
                     printf("Error:  function call: %s at line %d  has wrong number of parameters passed. expected %d, recivied %d \n",cIdent[i].name,cIdent[i].lineNo,fIdent[j].paramNo,cIdent[i].paramNo );
                     reset();
+                    return -1;
                 }
                 d = 1;
                 fIdent[j].used = 1;
@@ -112,6 +118,7 @@ void fnDeclared()
             red();
             printf("Error:  %s is not defined but used on line: %d \n",cIdent[i].name,cIdent[i].lineNo);
             reset();
+            return -1;
         }
     }
     int m = 0;
@@ -133,7 +140,9 @@ void fnDeclared()
         red();
         printf("ERROR: Main function not defined! \n");
         reset();
+        return -1;
     }
+    return 0;
 }
 
 
@@ -523,7 +532,11 @@ void debug(char* s)
 
 void main() 
  { 
-  yyparse(); 
-
-  fnDeclared();
+    if(yyparse() == 0 && fnDeclared() == 0)
+    {
+        green();
+        printf("Syntax Checking successful, No errors\n");
+        reset();
+    } 
+    
  } 
