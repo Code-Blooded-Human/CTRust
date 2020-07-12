@@ -472,7 +472,7 @@ void debug(char* s)
         | FCONST
         | num
     ;
-
+          
 // variable assign:
     varAssign : ident ASSIGN exp SEMI {debug("var assign");}
         | ident op ASSIGN exp SEMI
@@ -485,6 +485,41 @@ void debug(char* s)
         | MODOP
     ;
 
+//Pointers:
+ pointval: pointvalTypeOne
+          | pointvalTypeTwo
+          ;
+          
+  pointTypeOne: '&' mut TypeNoBounds
+               ;
+  mut:
+     | KEYWORD_STRICT_MUT 
+     ;
+               
+  pointTypeTwo: '*' KEYWORD_STRICT_MUT TypeNoBounds
+                | '*' KEYWORD_STRICT_CONST TypeNoBounds
+                ;
+  
+  TypeNoBounds: typepath
+              ;
+                 
+  typepath: mod_sep typesegment typefn
+           ;
+  mod_sep: 
+         | MOD_SEP
+         ;
+           
+  typefn:
+        | MOD_SEP typesegment typefn
+        ;
+            
+  typesegment: ident 
+              | SELF
+              | SUPER
+              | CRATE
+              ;
+          
+          
 // break stmt
     breakStmt: KEYWORD_STRICT_BREAK SEMI
         | KEYWORD_STRICT_BREAK exp SEMI
